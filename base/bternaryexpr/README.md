@@ -1,0 +1,3 @@
+# ternary
+
+## Ternary expression

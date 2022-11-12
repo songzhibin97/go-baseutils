@@ -1,0 +1,3 @@
+# slice
+
+## Encapsulated slice methods

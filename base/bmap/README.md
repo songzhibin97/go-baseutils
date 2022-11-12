@@ -1,0 +1,3 @@
+# map
+
+## Encapsulated map methods
