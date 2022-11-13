@@ -66,7 +66,5 @@ func (m *Map[K, V]) Find(f func(key K, value V) bool) (K, V) {
 			return iterator.Key(), iterator.Value()
 		}
 	}
-	var zerok K
-	var zerov V
-	return zerok, zerov
+	return m.zeroK, m.zeroV
 }

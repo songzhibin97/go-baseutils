@@ -668,7 +668,7 @@ func TestListString(t *testing.T) {
 	}
 }
 
-func benchmarkGet(b *testing.B, list *List[int], size int) {
+func benchmarkGet[E int](b *testing.B, list *List[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
 			list.Get(n)
@@ -676,15 +676,15 @@ func benchmarkGet(b *testing.B, list *List[int], size int) {
 	}
 }
 
-func benchmarkAdd(b *testing.B, list *List[int], size int) {
+func benchmarkAdd[E int](b *testing.B, list *List[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			list.Add(n)
+			list.Add(E(n))
 		}
 	}
 }
 
-func benchmarkRemove(b *testing.B, list *List[int], size int) {
+func benchmarkRemove[E int](b *testing.B, list *List[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
 			list.Remove(n)

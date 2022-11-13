@@ -700,26 +700,26 @@ func TestRedBlackTreeString(t *testing.T) {
 	}
 }
 
-func benchmarkGet(b *testing.B, tree *Tree[int, struct{}], size int) {
+func benchmarkGet[K int, V struct{}](b *testing.B, tree *Tree[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			tree.Get(n)
+			tree.Get(K(n))
 		}
 	}
 }
 
-func benchmarkPut(b *testing.B, tree *Tree[int, struct{}], size int) {
+func benchmarkPut[K int, V struct{}](b *testing.B, tree *Tree[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			tree.Put(n, struct{}{})
+			tree.Put(K(n), struct{}{})
 		}
 	}
 }
 
-func benchmarkRemove(b *testing.B, tree *Tree[int, struct{}], size int) {
+func benchmarkRemove[K int, V struct{}](b *testing.B, tree *Tree[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			tree.Remove(n)
+			tree.Remove(K(n))
 		}
 	}
 }

@@ -70,6 +70,5 @@ func (list *List[E]) Find(f func(index int, value E) bool) (index int, value E) 
 			return iterator.Index(), iterator.Value()
 		}
 	}
-	var zero E
-	return -1, zero
+	return -1, list.zero
 }

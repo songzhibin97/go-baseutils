@@ -24,7 +24,8 @@ func NewUnsafeAnyBSliceBySlice[E any](s []E) AnyBSlice[E] {
 }
 
 type UnsafeAnyBSlice[E any] struct {
-	e []E
+	e    []E
+	zero E
 }
 
 func (x *UnsafeAnyBSlice[E]) EqualFunc(es []E, f func(E, E) bool) bool {
@@ -367,8 +368,7 @@ func (x *UnsafeAnyBSlice[E]) GetByIndex(index int) E {
 
 func (x *UnsafeAnyBSlice[E]) GetByIndexE(index int) (E, error) {
 	if index < 0 || index >= len(x.e) {
-		var zero E
-		return zero, errors.New("index out of range")
+		return x.zero, errors.New("index out of range")
 	}
 	return x.e[index], nil
 }

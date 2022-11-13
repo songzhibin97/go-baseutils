@@ -21,6 +21,7 @@ var _ sets.Set[any] = (*Set[any])(nil)
 // Set holds elements in a red-black tree
 type Set[E any] struct {
 	tree *redblacktree.Tree[E, struct{}]
+	zero E
 }
 
 var itemExists = struct{}{}

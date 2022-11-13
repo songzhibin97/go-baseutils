@@ -467,15 +467,15 @@ func TestBTreeString(t *testing.T) {
 	}
 }
 
-func benchmarkEnqueue(b *testing.B, queue *Queue[int], size int) {
+func benchmarkEnqueue[E int](b *testing.B, queue *Queue[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			queue.Enqueue(n)
+			queue.Enqueue(E(n))
 		}
 	}
 }
 
-func benchmarkDequeue(b *testing.B, queue *Queue[int], size int) {
+func benchmarkDequeue[E int](b *testing.B, queue *Queue[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
 			queue.Dequeue()

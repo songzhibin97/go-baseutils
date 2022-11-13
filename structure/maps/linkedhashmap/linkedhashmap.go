@@ -25,6 +25,8 @@ var _ maps.Map[int, any] = (*Map[int, any])(nil)
 type Map[K comparable, V any] struct {
 	table    map[K]V
 	ordering *doublylinkedlist.List[K]
+	zeroK    K
+	zeroV    V
 }
 
 // New instantiates a linked-hash-map.

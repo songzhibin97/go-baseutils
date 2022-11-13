@@ -413,15 +413,15 @@ func TestBTreeString(t *testing.T) {
 	}
 }
 
-func benchmarkPush(b *testing.B, heap *Heap[int], size int) {
+func benchmarkPush[E int](b *testing.B, heap *Heap[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			heap.Push(n)
+			heap.Push(E(n))
 		}
 	}
 }
 
-func benchmarkPop(b *testing.B, heap *Heap[int], size int) {
+func benchmarkPop[E int](b *testing.B, heap *Heap[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
 			heap.Pop()

@@ -21,7 +21,9 @@ var _ maps.Map[int, any] = (*Map[int, any])(nil)
 
 // Map holds the elements in a red-black tree
 type Map[K, V any] struct {
-	tree *redblacktree.Tree[K, V]
+	tree  *redblacktree.Tree[K, V]
+	zeroK K
+	zeroV V
 }
 
 // NewWith instantiates a tree map with the custom comparator.
@@ -89,9 +91,7 @@ func (m *Map[K, V]) Min() (key K, value V) {
 	if node := m.tree.Left(); node != nil {
 		return node.Key, node.Value
 	}
-	var zerok K
-	var zeroV V
-	return zerok, zeroV
+	return m.zeroK, m.zeroV
 }
 
 // Max returns the maximum key and its value from the tree map.
@@ -100,9 +100,7 @@ func (m *Map[K, V]) Max() (key K, value V) {
 	if node := m.tree.Right(); node != nil {
 		return node.Key, node.Value
 	}
-	var zerok K
-	var zeroV V
-	return zerok, zeroV
+	return m.zeroK, m.zeroV
 }
 
 // Floor finds the floor key-value pair for the input key.
@@ -119,9 +117,7 @@ func (m *Map[K, V]) Floor(key K) (foundkey K, foundvalue V) {
 	if found {
 		return node.Key, node.Value
 	}
-	var zerok K
-	var zeroV V
-	return zerok, zeroV
+	return m.zeroK, m.zeroV
 }
 
 // Ceiling finds the ceiling key-value pair for the input key.
@@ -138,9 +134,7 @@ func (m *Map[K, V]) Ceiling(key K) (foundkey K, foundvalue V) {
 	if found {
 		return node.Key, node.Value
 	}
-	var zerok K
-	var zeroV V
-	return zerok, zeroV
+	return m.zeroK, m.zeroV
 }
 
 // String returns a string representation of container

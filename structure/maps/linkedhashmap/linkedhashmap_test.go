@@ -616,26 +616,26 @@ func assertSerialization(m *Map[string, string], txt string, t *testing.T) {
 	}
 }
 
-func benchmarkGet(b *testing.B, m *Map[int, struct{}], size int) {
+func benchmarkGet[K int, V struct{}](b *testing.B, m *Map[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			m.Get(n)
+			m.Get(K(n))
 		}
 	}
 }
 
-func benchmarkPut(b *testing.B, m *Map[int, struct{}], size int) {
+func benchmarkPut[K int, V struct{}](b *testing.B, m *Map[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			m.Put(n, struct{}{})
+			m.Put(K(n), struct{}{})
 		}
 	}
 }
 
-func benchmarkRemove(b *testing.B, m *Map[int, struct{}], size int) {
+func benchmarkRemove[K int, V struct{}](b *testing.B, m *Map[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			m.Remove(n)
+			m.Remove(K(n))
 		}
 	}
 }

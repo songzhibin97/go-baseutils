@@ -218,26 +218,26 @@ func sameElements[E any](a []E, b []E) bool {
 	return true
 }
 
-func benchmarkGet(b *testing.B, m *Map[int, int], size int) {
+func benchmarkGet[K, V int](b *testing.B, m *Map[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			m.Get(n)
+			m.Get(K(n))
 		}
 	}
 }
 
-func benchmarkPut(b *testing.B, m *Map[int, int], size int) {
+func benchmarkPut[K, V int](b *testing.B, m *Map[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			m.Put(n, n)
+			m.Put(K(n), V(n))
 		}
 	}
 }
 
-func benchmarkRemove(b *testing.B, m *Map[int, int], size int) {
+func benchmarkRemove[K, V int](b *testing.B, m *Map[K, V], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			m.Remove(n)
+			m.Remove(K(n))
 		}
 	}
 }

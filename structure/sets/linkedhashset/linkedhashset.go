@@ -25,6 +25,7 @@ var _ sets.Set[int] = (*Set[int])(nil)
 type Set[E comparable] struct {
 	table    map[E]struct{}
 	ordering *doublylinkedlist.List[E]
+	zero     E
 }
 
 var itemExists = struct{}{}

@@ -21,6 +21,7 @@ var _ lists.List[any] = (*List[any])(nil)
 type List[E any] struct {
 	elements []E
 	size     int
+	zero     E
 }
 
 const (
@@ -51,8 +52,7 @@ func (l *List[E]) Add(values ...E) {
 func (l *List[E]) Get(index int) (E, bool) {
 
 	if !l.withinRange(index) {
-		var zero E
-		return zero, false
+		return l.zero, false
 	}
 
 	return l.elements[index], true
@@ -65,8 +65,7 @@ func (l *List[E]) Remove(index int) {
 		return
 	}
 
-	var zero E
-	l.elements[index] = zero                             // cleanup reference
+	l.elements[index] = l.zero                           // cleanup reference
 	copy(l.elements[index:], l.elements[index+1:l.size]) // shift to the left by one (slow operation, need ways to optimize this)
 	l.size--
 

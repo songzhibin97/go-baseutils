@@ -33,6 +33,8 @@ type Map[K, V any] struct {
 	inverseMap      redblacktree.Tree[V, K]
 	keyComparator   bcomparator.Comparator[K]
 	valueComparator bcomparator.Comparator[V]
+	zeroK           K
+	zeroV           V
 }
 
 // NewWith instantiates a bidirectional map.
@@ -73,8 +75,7 @@ func (m *Map[K, V]) Get(key K) (value V, found bool) {
 	if d, ok := m.forwardMap.Get(key); ok {
 		return d, true
 	}
-	var zero V
-	return zero, false
+	return m.zeroV, false
 }
 
 // GetKey searches the element in the map by value and returns its key or nil if value is not found in map.
@@ -83,8 +84,7 @@ func (m *Map[K, V]) GetKey(value V) (key K, found bool) {
 	if d, ok := m.inverseMap.Get(value); ok {
 		return d, true
 	}
-	var zero K
-	return zero, false
+	return m.zeroK, false
 }
 
 // Remove removes the element from the map by key.

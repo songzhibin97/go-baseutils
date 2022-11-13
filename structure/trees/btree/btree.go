@@ -31,6 +31,8 @@ type Tree[K, V any] struct {
 	Comparator bcomparator.Comparator[K] // Key comparator
 	size       int                       // Total number of keys in the tree
 	m          int                       // order (maximum number of children)
+	zeroK      K
+	zeroV      V
 }
 
 // Node is a single element within the tree
@@ -89,8 +91,7 @@ func (tree *Tree[K, V]) Get(key K) (value V, found bool) {
 	if found {
 		return node.Entries[index].Value, true
 	}
-	var zero V
-	return zero, false
+	return tree.zeroV, false
 }
 
 // GetNode searches the node in the tree by key and returns its node or nil if key is not found in tree.
@@ -174,8 +175,7 @@ func (tree *Tree[K, V]) LeftKey() K {
 	if left := tree.Left(); left != nil {
 		return left.Entries[0].Key
 	}
-	var zero K
-	return zero
+	return tree.zeroK
 }
 
 // LeftValue returns the left-most value or nil if tree is empty.
@@ -183,8 +183,7 @@ func (tree *Tree[K, V]) LeftValue() V {
 	if left := tree.Left(); left != nil {
 		return left.Entries[0].Value
 	}
-	var zero V
-	return zero
+	return tree.zeroV
 }
 
 // Right returns the right-most (max) node or nil if tree is empty.
@@ -197,8 +196,7 @@ func (tree *Tree[K, V]) RightKey() K {
 	if right := tree.Right(); right != nil {
 		return right.Entries[len(right.Entries)-1].Key
 	}
-	var zero K
-	return zero
+	return tree.zeroK
 }
 
 // RightValue returns the right-most value or nil if tree is empty.
@@ -206,8 +204,7 @@ func (tree *Tree[K, V]) RightValue() V {
 	if right := tree.Right(); right != nil {
 		return right.Entries[len(right.Entries)-1].Value
 	}
-	var zero V
-	return zero
+	return tree.zeroV
 }
 
 // String returns a string representation of container (for debugging purposes)

@@ -28,6 +28,7 @@ type Tree[K, V any] struct {
 	Root       *Node[K, V]
 	size       int
 	Comparator bcomparator.Comparator[K]
+	zeroV      V
 }
 
 // Node is a single element within the tree
@@ -106,8 +107,7 @@ func (tree *Tree[K, V]) Get(key K) (value V, found bool) {
 	if node != nil {
 		return node.Value, true
 	}
-	var zero V
-	return zero, false
+	return tree.zeroV, false
 }
 
 // GetNode searches the node in the tree by key and returns its node or nil if key is not found in tree.

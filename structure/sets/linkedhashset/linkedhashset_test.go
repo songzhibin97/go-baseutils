@@ -540,26 +540,26 @@ func TestSetDifference(t *testing.T) {
 	}
 }
 
-func benchmarkContains(b *testing.B, set *Set[int], size int) {
+func benchmarkContains[E int](b *testing.B, set *Set[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			set.Contains(n)
+			set.Contains(E(n))
 		}
 	}
 }
 
-func benchmarkAdd(b *testing.B, set *Set[int], size int) {
+func benchmarkAdd[E int](b *testing.B, set *Set[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			set.Add(n)
+			set.Add(E(n))
 		}
 	}
 }
 
-func benchmarkRemove(b *testing.B, set *Set[int], size int) {
+func benchmarkRemove[E int](b *testing.B, set *Set[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			set.Remove(n)
+			set.Remove(E(n))
 		}
 	}
 }

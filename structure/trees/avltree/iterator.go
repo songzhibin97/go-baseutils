@@ -10,6 +10,8 @@ type Iterator[K any, V any] struct {
 	tree     *Tree[K, V]
 	node     *Node[K, V]
 	position position
+	zeroK    K
+	zeroV    V
 }
 
 type position byte
@@ -67,8 +69,7 @@ func (iterator *Iterator[K, V]) Prev() bool {
 // Does not modify the state of the iterator.
 func (iterator *Iterator[K, V]) Value() V {
 	if iterator.node == nil {
-		var zero V
-		return zero
+		return iterator.zeroV
 	}
 	return iterator.node.Value
 }
@@ -77,8 +78,7 @@ func (iterator *Iterator[K, V]) Value() V {
 // Does not modify the state of the iterator.
 func (iterator *Iterator[K, V]) Key() K {
 	if iterator.node == nil {
-		var zero K
-		return zero
+		return iterator.zeroK
 	}
 	return iterator.node.Key
 }

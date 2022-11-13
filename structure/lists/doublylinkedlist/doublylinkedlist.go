@@ -22,6 +22,7 @@ type List[E any] struct {
 	first *element[E]
 	last  *element[E]
 	size  int
+	zero  E
 }
 
 type element[E any] struct {
@@ -80,8 +81,7 @@ func (list *List[E]) Prepend(values ...E) {
 func (list *List[E]) Get(index int) (E, bool) {
 
 	if !list.withinRange(index) {
-		var zero E
-		return zero, false
+		return list.zero, false
 	}
 
 	// determine traveral direction, last to first or first to last

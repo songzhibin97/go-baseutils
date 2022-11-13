@@ -31,6 +31,7 @@ type Queue[E any] struct {
 	full    bool
 	maxSize int
 	size    int
+	zero    E
 }
 
 // New instantiates a new empty queue with the specified size of maximum number of elements that it can hold.
@@ -65,15 +66,13 @@ func (queue *Queue[E]) Enqueue(value E) {
 // Second return parameter is true, unless the queue was empty and there was nothing to dequeue.
 func (queue *Queue[E]) Dequeue() (value E, ok bool) {
 	if queue.Empty() {
-		var zero E
-		return zero, false
+		return queue.zero, false
 	}
 
 	value, ok = queue.values[queue.start], true
 
-	var zero E
-	if !reflect.DeepEqual(value, zero) {
-		queue.values[queue.start] = zero
+	if !reflect.DeepEqual(value, queue.zero) {
+		queue.values[queue.start] = queue.zero
 		queue.start = queue.start + 1
 		if queue.start >= queue.maxSize {
 			queue.start = 0
@@ -90,8 +89,7 @@ func (queue *Queue[E]) Dequeue() (value E, ok bool) {
 // Second return parameter is true, unless the queue was empty and there was nothing to peek.
 func (queue *Queue[E]) Peek() (value E, ok bool) {
 	if queue.Empty() {
-		var zero E
-		return zero, false
+		return queue.zero, false
 	}
 	return queue.values[queue.start], true
 }

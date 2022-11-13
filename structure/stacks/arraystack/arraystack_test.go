@@ -388,15 +388,15 @@ func TestStackString(t *testing.T) {
 	}
 }
 
-func benchmarkPush(b *testing.B, stack *Stack[int], size int) {
+func benchmarkPush[E int](b *testing.B, stack *Stack[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
-			stack.Push(n)
+			stack.Push(E(n))
 		}
 	}
 }
 
-func benchmarkPop(b *testing.B, stack *Stack[int], size int) {
+func benchmarkPop[E int](b *testing.B, stack *Stack[E], size int) {
 	for i := 0; i < b.N; i++ {
 		for n := 0; n < size; n++ {
 			stack.Pop()
