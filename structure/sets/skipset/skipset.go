@@ -1,13 +1,17 @@
+// Package skipset is a high-performance, scalable, concurrent-safe set based on skip-list.
+// In the typical pattern(100000 operations, 90%CONTAINS 9%Add 1%Remove, 8C16T), the skipset
+// up to 15x faster than the built-in sync.Map.
 package skipset
 
 import (
 	"fmt"
-	"github.com/songzhibin97/go-baseutils/base/bcomparator"
-	"github.com/songzhibin97/go-baseutils/structure/sets"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"unsafe"
+
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
+	"github.com/songzhibin97/go-baseutils/structure/sets"
 )
 
 // Assert Set implementation
@@ -21,19 +25,17 @@ type Set[E any] struct {
 }
 
 type node[E any] struct {
-	value      E
-	next       optionalArray // [level]*node[E]
-	mu         sync.Mutex
-	flags      bitflag
-	level      uint32
-	comparator bcomparator.Comparator[E]
+	value E
+	next  optionalArray // [level]*node[E]
+	mu    sync.Mutex
+	flags bitflag
+	level uint32
 }
 
-func newNode[E any](e E, level int, comparator bcomparator.Comparator[E]) *node[E] {
+func newNode[E any](e E, level int) *node[E] {
 	node := &node[E]{
-		value:      e,
-		level:      uint32(level),
-		comparator: comparator,
+		value: e,
+		level: uint32(level),
 	}
 	if level > op1 {
 		node.next.extra = new([op2]unsafe.Pointer)
@@ -57,17 +59,17 @@ func (n *node[E]) atomicStoreNext(i int, node *node[E]) {
 	n.next.atomicStore(i, unsafe.Pointer(node))
 }
 
-func (n *node[E]) lessthan(value E) bool {
-	return n.comparator(n.value, value) < 0
+func (n *node[E]) lessthan(value E, comparable bcomparator.Comparator[E]) bool {
+	return comparable(n.value, value) < 0
 }
 
-func (n *node[E]) equal(value E) bool {
-	return n.comparator(n.value, value) == 0
+func (n *node[E]) equal(value E, comparable bcomparator.Comparator[E]) bool {
+	return comparable(n.value, value) == 0
 }
 
 func New[E any](comparator bcomparator.Comparator[E]) *Set[E] {
 	var zero E
-	h := newNode[E](zero, maxLevel, comparator)
+	h := newNode[E](zero, maxLevel)
 	h.flags.SetTrue(fullyLinked)
 	return &Set[E]{
 		header:       h,
@@ -83,7 +85,7 @@ func (s *Set[E]) findNodeRemove(value E, preds *[maxLevel]*node[E], succs *[maxL
 	lFound, x := -1, s.header
 	for i := int(atomic.LoadInt64(&s.highestLevel)) - 1; i >= 0; i-- {
 		succ := x.atomicLoadNext(i)
-		for succ != nil && succ.lessthan(value) {
+		for succ != nil && succ.lessthan(value, s.comparator) {
 			x = succ
 			succ = x.atomicLoadNext(i)
 		}
@@ -91,7 +93,7 @@ func (s *Set[E]) findNodeRemove(value E, preds *[maxLevel]*node[E], succs *[maxL
 		succs[i] = succ
 
 		// Check if the value already in the skip list.
-		if lFound == -1 && succ != nil && succ.equal(value) {
+		if lFound == -1 && succ != nil && succ.equal(value, s.comparator) {
 			lFound = i
 		}
 	}
@@ -104,7 +106,7 @@ func (s *Set[E]) findNodeAdd(value E, preds *[maxLevel]*node[E], succs *[maxLeve
 	x := s.header
 	for i := int(atomic.LoadInt64(&s.highestLevel)) - 1; i >= 0; i-- {
 		succ := x.atomicLoadNext(i)
-		for succ != nil && succ.lessthan(value) {
+		for succ != nil && succ.lessthan(value, s.comparator) {
 			x = succ
 			succ = x.atomicLoadNext(i)
 		}
@@ -112,7 +114,7 @@ func (s *Set[E]) findNodeAdd(value E, preds *[maxLevel]*node[E], succs *[maxLeve
 		succs[i] = succ
 
 		// Check if the value already in the skip list.
-		if succ != nil && succ.equal(value) {
+		if succ != nil && succ.equal(value, s.comparator) {
 			return i
 		}
 	}
@@ -129,7 +131,7 @@ func unlockInt64[E any](preds [maxLevel]*node[E], highestLevel int) {
 	}
 }
 
-// Add add the value into skip set, return true if this process insert the value into skip set,
+// AddB add the value into skip set, return true if this process insert the value into skip set,
 // return false if this process can't insert this value, because another process has insert the same value.
 //
 // If the value is in the skip set but not fully linked, this process will wait until it is.
@@ -175,7 +177,7 @@ func (s *Set[E]) AddB(value E) bool {
 			continue
 		}
 
-		nn := newNode[E](value, level, s.comparator)
+		nn := newNode[E](value, level)
 		for layer := 0; layer < level; layer++ {
 			nn.storeNext(layer, succs[layer])
 			preds[layer].atomicStoreNext(layer, nn)
@@ -209,18 +211,18 @@ func (s *Set[E]) randomLevel() int {
 	return level
 }
 
-// Contains check if the value is in the skip set.
+// ContainsB check if the value is in the skip set.
 func (s *Set[E]) ContainsB(value E) bool {
 	x := s.header
 	for i := int(atomic.LoadInt64(&s.highestLevel)) - 1; i >= 0; i-- {
 		nex := x.atomicLoadNext(i)
-		for nex != nil && nex.lessthan(value) {
+		for nex != nil && nex.lessthan(value, s.comparator) {
 			x = nex
 			nex = x.atomicLoadNext(i)
 		}
 
 		// Check if the value already in the skip list.
-		if nex != nil && nex.equal(value) {
+		if nex != nil && nex.equal(value, s.comparator) {
 			return nex.flags.MGet(fullyLinked|marked, fullyLinked)
 		}
 	}
@@ -236,7 +238,7 @@ func (s *Set[E]) Contains(values ...E) bool {
 	return true
 }
 
-// Remove a node from the skip set.
+// RemoveB a node from the skip set.
 func (s *Set[E]) RemoveB(value E) bool {
 	var (
 		nodeToRemove *node[E]
@@ -336,7 +338,7 @@ func (s *Set[E]) Size() int {
 
 func (s *Set[E]) Clear() {
 	var zero E
-	h := newNode[E](zero, maxLevel, s.comparator)
+	h := newNode[E](zero, maxLevel)
 	h.flags.SetTrue(fullyLinked)
 	s.header = h
 	s.highestLevel = defaultHighestLevel

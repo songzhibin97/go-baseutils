@@ -2,8 +2,30 @@
 
 [The following references](https://github.com/emirpasic/gods) Convert to generic mode
 - lists
+  - arraylist
+  - doublylinkedlist
+  - singlylinkedlist
 - maps
+  - hashbidimap
+  - hashmap
+  - linkedhashmap
+  - treebidimap
+  - treemap
 - queues
+  - arrayqueue
+  - circularbuffer
+  - linkedlistqueue
+  - priorityqueue
 - sets
+  - hashset
+  - linkedhashset
+  - skipset
+  - treeset
 - stacks
+  - arraystack
+  - linkedliststack
 - trees
+  - avltree
+  - binaryheap
+  - btree
+  - redblacktree

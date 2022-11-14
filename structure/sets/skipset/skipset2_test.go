@@ -1,9 +1,10 @@
 package skipset
 
 import (
-	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"strings"
 	"testing"
+
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 )
 
 func TestSetNew(t *testing.T) {
@@ -110,7 +111,7 @@ func benchmarkRemove[E int](b *testing.B, set *Set[E], size int) {
 	}
 }
 
-func BenchmarkHashSetContains100(b *testing.B) {
+func BenchmarkSkipSetContains100(b *testing.B) {
 	b.StopTimer()
 	size := 100
 	set := New[int](bcomparator.IntComparator())
@@ -121,7 +122,7 @@ func BenchmarkHashSetContains100(b *testing.B) {
 	benchmarkContains(b, set, size)
 }
 
-func BenchmarkHashSetContains1000(b *testing.B) {
+func BenchmarkSkipSetContains1000(b *testing.B) {
 	b.StopTimer()
 	size := 1000
 	set := New[int](bcomparator.IntComparator())
@@ -132,7 +133,7 @@ func BenchmarkHashSetContains1000(b *testing.B) {
 	benchmarkContains(b, set, size)
 }
 
-func BenchmarkHashSetContains10000(b *testing.B) {
+func BenchmarkSkipSetContains10000(b *testing.B) {
 	b.StopTimer()
 	size := 10000
 	set := New[int](bcomparator.IntComparator())
@@ -143,7 +144,7 @@ func BenchmarkHashSetContains10000(b *testing.B) {
 	benchmarkContains(b, set, size)
 }
 
-func BenchmarkHashSetContains100000(b *testing.B) {
+func BenchmarkSkipSetContains100000(b *testing.B) {
 	b.StopTimer()
 	size := 100000
 	set := New[int](bcomparator.IntComparator())
@@ -154,7 +155,7 @@ func BenchmarkHashSetContains100000(b *testing.B) {
 	benchmarkContains(b, set, size)
 }
 
-func BenchmarkHashSetAdd100(b *testing.B) {
+func BenchmarkSkipSetAdd100(b *testing.B) {
 	b.StopTimer()
 	size := 100
 	set := New[int](bcomparator.IntComparator())
@@ -162,7 +163,7 @@ func BenchmarkHashSetAdd100(b *testing.B) {
 	benchmarkAdd(b, set, size)
 }
 
-func BenchmarkHashSetAdd1000(b *testing.B) {
+func BenchmarkSkipSetAdd1000(b *testing.B) {
 	b.StopTimer()
 	size := 1000
 	set := New[int](bcomparator.IntComparator())
@@ -173,7 +174,7 @@ func BenchmarkHashSetAdd1000(b *testing.B) {
 	benchmarkAdd(b, set, size)
 }
 
-func BenchmarkHashSetAdd10000(b *testing.B) {
+func BenchmarkSkipSetAdd10000(b *testing.B) {
 	b.StopTimer()
 	size := 10000
 	set := New[int](bcomparator.IntComparator())
@@ -184,7 +185,7 @@ func BenchmarkHashSetAdd10000(b *testing.B) {
 	benchmarkAdd(b, set, size)
 }
 
-func BenchmarkHashSetAdd100000(b *testing.B) {
+func BenchmarkSkipSetAdd100000(b *testing.B) {
 	b.StopTimer()
 	size := 100000
 	set := New[int](bcomparator.IntComparator())
@@ -195,7 +196,7 @@ func BenchmarkHashSetAdd100000(b *testing.B) {
 	benchmarkAdd(b, set, size)
 }
 
-func BenchmarkHashSetRemove100(b *testing.B) {
+func BenchmarkSkipSetRemove100(b *testing.B) {
 	b.StopTimer()
 	size := 100
 	set := New[int](bcomparator.IntComparator())
@@ -206,7 +207,7 @@ func BenchmarkHashSetRemove100(b *testing.B) {
 	benchmarkRemove(b, set, size)
 }
 
-func BenchmarkHashSetRemove1000(b *testing.B) {
+func BenchmarkSkipSetRemove1000(b *testing.B) {
 	b.StopTimer()
 	size := 1000
 	set := New[int](bcomparator.IntComparator())
@@ -217,7 +218,7 @@ func BenchmarkHashSetRemove1000(b *testing.B) {
 	benchmarkRemove(b, set, size)
 }
 
-func BenchmarkHashSetRemove10000(b *testing.B) {
+func BenchmarkSkipSetRemove10000(b *testing.B) {
 	b.StopTimer()
 	size := 10000
 	set := New[int](bcomparator.IntComparator())
@@ -228,7 +229,7 @@ func BenchmarkHashSetRemove10000(b *testing.B) {
 	benchmarkRemove(b, set, size)
 }
 
-func BenchmarkHashSetRemove100000(b *testing.B) {
+func BenchmarkSkipSetRemove100000(b *testing.B) {
 	b.StopTimer()
 	size := 100000
 	set := New[int](bcomparator.IntComparator())

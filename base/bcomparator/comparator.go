@@ -3,10 +3,11 @@ package bcomparator
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/songzhibin97/go-baseutils/base/bmath"
 	"github.com/songzhibin97/go-baseutils/base/bternaryexpr"
 	"github.com/songzhibin97/go-baseutils/base/btype"
-	"strings"
 )
 
 type Comparator[T any] func(a, b T) int
