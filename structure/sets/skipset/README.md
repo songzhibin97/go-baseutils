@@ -29,41 +29,6 @@ In these situations, `sync.Map` is better
 - Only one goroutine access the set for most of the time, such as insert a batch of elements and then use
   only `Contains` (use built-in map is even better).
 
-## QuickStart
-
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/songzhibin97/gkit/structure/skipset"
-)
-
-func main() {
-	l := NewInt()
-
-	for _, v := range []int{10, 12, 15} {
-		if l.Add(v) {
-			fmt.Println("skipset add", v)
-		}
-	}
-
-	if l.Contains(10) {
-		fmt.Println("skipset contains 10")
-	}
-
-	l.Range(func(value int) bool {
-		fmt.Println("skipset range found ", value)
-		return true
-	})
-
-	l.Remove(15)
-	fmt.Printf("skipset contains %d items\r\n", l.Len())
-}
-
-```
-
 ## Benchmark
 
 Go version: go1.16.2 linux/amd64
