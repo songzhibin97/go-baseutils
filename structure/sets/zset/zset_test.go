@@ -38,7 +38,7 @@ func TestSetAdd(t *testing.T) {
 func TestSetContains(t *testing.T) {
 	z := New[string](bcomparator.StringComparator())
 	v := randString("")
-	z.Add(1, v)
+	z.AddB(1, v)
 	assert.True(t, z.Contains(v))
 	assert.False(t, z.Contains("no-such-"+v))
 }
@@ -47,7 +47,7 @@ func TestSetScore(t *testing.T) {
 	z := New[string](bcomparator.StringComparator())
 	v := randString("")
 	s := rand.Float64()
-	z.Add(s, v)
+	z.AddB(s, v)
 	as, ok := z.Score(v)
 	assert.True(t, ok)
 	assert.Equal(t, s, as)
@@ -83,7 +83,7 @@ func TestSetRemove(t *testing.T) {
 func TestSetRank(t *testing.T) {
 	z := New[string](bcomparator.StringComparator())
 	v := randString("")
-	z.Add(1, v)
+	z.AddB(1, v)
 	// test rank of exist value
 	assert.Equal(t, 0, z.Rank(v))
 	// test rank of non-exist value
@@ -98,7 +98,7 @@ func TestSetRank_Many(t *testing.T) {
 	var vs []string
 	for i := 0; i < N; i++ {
 		v := randString("")
-		z.Add(rand.Float64(), v)
+		z.AddB(rand.Float64(), v)
 		vs = append(vs, v)
 	}
 	for _, v := range vs {
@@ -127,7 +127,7 @@ func TestSetRank_UpdateScore(t *testing.T) {
 	var vs []string
 	for i := 0; i < 100; i++ {
 		v := fmt.Sprint(i)
-		z.Add(rand.Float64(), v)
+		z.AddB(rand.Float64(), v)
 		vs = append(vs, v)
 	}
 	// Randomly update score
@@ -136,7 +136,7 @@ func TestSetRank_UpdateScore(t *testing.T) {
 		if rand.Float64() > 0.5 {
 			continue
 		}
-		z.Add(float64(i), fmt.Sprint(i))
+		z.AddB(float64(i), fmt.Sprint(i))
 	}
 
 	for _, v := range vs {
@@ -167,7 +167,7 @@ func TestSetIsSorted(t *testing.T) {
 
 	// Test whether the ramdom inserted values sorted
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 	testIsSorted(t, z)
 	testInternalSpan(t, z)
@@ -178,7 +178,7 @@ func TestSetIsSorted(t *testing.T) {
 		if rand.Float64() > 0.5 {
 			continue
 		}
-		z.Add(float64(i), fmt.Sprint(i))
+		z.AddB(float64(i), fmt.Sprint(i))
 	}
 
 	testIsSorted(t, z)
@@ -245,7 +245,7 @@ func testFloat64SetRange(t *testing.T, rev bool) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 
 	start, stop := func(a, b int) (int, int) {
@@ -275,7 +275,7 @@ func TestSetRange_Negative(t *testing.T) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 	ns := z.Range(-1, -1)
 	assert.Equal(t, 1, len(ns))
@@ -286,7 +286,7 @@ func TestSetRevRange_Negative(t *testing.T) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 	ns := z.RevRange(-1, -1)
 	assert.Equal(t, 1, len(ns))
@@ -299,9 +299,9 @@ func TestSetRangeByScore(t *testing.T) {
 
 func TestSetRangeByScoreWithOpt(t *testing.T) {
 	z := New[string](bcomparator.StringComparator())
-	z.Add(1.0, "1")
-	z.Add(1.1, "2")
-	z.Add(2.0, "3")
+	z.AddB(1.0, "1")
+	z.AddB(1.1, "2")
+	z.AddB(2.0, "3")
 
 	ns := z.RangeByScoreWithOpt(1.0, 2.0, RangeOpt{ExcludeMin: true})
 	assert.Equal(t, 2, len(ns))
@@ -334,9 +334,9 @@ func TestSetRangeByScoreWithOpt(t *testing.T) {
 
 func TestSetRevRangeByScoreWithOpt(t *testing.T) {
 	z := New[string](bcomparator.StringComparator())
-	z.Add(1.0, "1")
-	z.Add(1.1, "2")
-	z.Add(2.0, "3")
+	z.AddB(1.0, "1")
+	z.AddB(1.1, "2")
+	z.AddB(2.0, "3")
 
 	ns := z.RevRangeByScoreWithOpt(2.0, 1.0, RangeOpt{ExcludeMax: true})
 	assert.Equal(t, 2, len(ns))
@@ -375,7 +375,7 @@ func testFloat64SetRangeByScore(t *testing.T, rev bool) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 
 	min, max := func(a, b float64) (float64, float64) {
@@ -418,7 +418,7 @@ func testFloat64SetCountWithOpt(t *testing.T, opt RangeOpt) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 
 	min, max := func(a, b float64) (float64, float64) {
@@ -459,7 +459,7 @@ func TestSetRemoveRangeByRank(t *testing.T) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 
 	start, stop := func(a, b int) (int, int) {
@@ -492,7 +492,7 @@ func testFloat64SetRemoveRangeByScoreWithOpt(t *testing.T, opt RangeOpt) {
 	const N = 1000
 	z := New[string](bcomparator.StringComparator())
 	for i := 0; i < N; i++ {
-		z.Add(fastrand.Float64(), fmt.Sprint(i))
+		z.AddB(fastrand.Float64(), fmt.Sprint(i))
 	}
 
 	min, max := func(a, b float64) (float64, float64) {
@@ -520,7 +520,7 @@ func TestUnionFloat64(t *testing.T) {
 		z := New[string](bcomparator.StringComparator())
 		for j := 0; j < 100; j++ {
 			if fastrand.Float64() > 0.8 {
-				z.Add(fastrand.Float64(), fmt.Sprint(i))
+				z.AddB(fastrand.Float64(), fmt.Sprint(i))
 			}
 		}
 		zs = append(zs, z)
@@ -547,7 +547,7 @@ func TestInterFloat64(t *testing.T) {
 		z := New[string](bcomparator.StringComparator())
 		for j := 0; j < 10; j++ {
 			if fastrand.Float64() > 0.8 {
-				z.Add(fastrand.Float64(), fmt.Sprint(i))
+				z.AddB(fastrand.Float64(), fmt.Sprint(i))
 			}
 		}
 		zs = append(zs, z)
@@ -571,11 +571,11 @@ func TestInterFloat64_Empty(t *testing.T) {
 
 func TestInterFloat64_Simple(t *testing.T) {
 	z1 := New[string](bcomparator.StringComparator())
-	z1.Add(0, "1")
+	z1.AddB(0, "1")
 	z2 := New[string](bcomparator.StringComparator())
-	z2.Add(0, "1")
+	z2.AddB(0, "1")
 	z3 := New[string](bcomparator.StringComparator())
-	z3.Add(0, "2")
+	z3.AddB(0, "2")
 
 	z := Inter(bcomparator.StringComparator(), z1, z2, z3)
 	assert.Zero(t, z.Len())

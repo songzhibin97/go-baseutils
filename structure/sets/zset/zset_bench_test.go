@@ -33,7 +33,7 @@ func benchmarkContainsNHits(b *testing.B, n int) {
 			val := strconv.Itoa(i)
 			vals = append(vals, val)
 			if fastrand.Intn(100)+1 <= n {
-				z.Add(fastrand.Float64(), val)
+				z.AddB(fastrand.Float64(), val)
 			}
 		}
 		b.ResetTimer()
@@ -85,7 +85,7 @@ func benchmarkNAddNIncrNRemoveNContains(b *testing.B, nAdd, nIncr, nRemove, nCon
 				val := vals[r]
 				if u := ops[r] + 1; u <= nAdd {
 					// anAdd++
-					z.Add(scores[r], val)
+					z.AddB(scores[r], val)
 				} else if u-nAdd <= nIncr {
 					// anIncr++
 					z.IncrBy(scores[r], val)
