@@ -2,9 +2,10 @@ package bmap
 
 import (
 	"encoding/json"
-	"github.com/songzhibin97/go-baseutils/base/bternaryexpr"
 	"reflect"
 	"sync"
+
+	"github.com/songzhibin97/go-baseutils/base/bternaryexpr"
 )
 
 // =====================================================================================================================
@@ -97,12 +98,8 @@ func (x *UnsafeAnyBMap[K, V]) IsExist(k K) bool {
 }
 
 func (x *UnsafeAnyBMap[K, V]) ContainsKey(k K) bool {
-	for k2 := range x.mp {
-		if k == k2 {
-			return true
-		}
-	}
-	return false
+	_, ok := x.mp[k]
+	return ok
 }
 
 func (x *UnsafeAnyBMap[K, V]) ContainsValue(v V) bool {

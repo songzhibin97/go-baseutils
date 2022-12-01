@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/songzhibin97/go-baseutils/base/anytostring"
+	banytostring "github.com/songzhibin97/go-baseutils/base/anytostring"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 )
 
@@ -106,7 +106,7 @@ func (m *Map[K, V]) UnmarshalJSON(bytes []byte) error {
 func (m *Map[K, V]) MarshalJSON() ([]byte, error) {
 	elements := make(map[string]interface{})
 	for key, value := range m.m {
-		elements[anytostring.AnyToString(key)] = value
+		elements[banytostring.ToString(key)] = value
 	}
 	return json.Marshal(&elements)
 }

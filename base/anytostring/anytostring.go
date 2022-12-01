@@ -1,4 +1,4 @@
-package anytostring
+package banytostring
 
 import (
 	"encoding/json"
@@ -23,7 +23,15 @@ func indirectToStringerOrError(a interface{}) interface{} {
 	return v.Interface()
 }
 
-func ToStringE(i interface{}) (string, error) {
+func ToStringE(i interface{}) (string, error) { // ToStringE// ToStringE
+	// @Description:
+	// @param i:
+	// @return string
+	// @return error
+	// @Description:
+	// @param i:
+	// @return string
+	// @return error
 	i = indirectToStringerOrError(i)
 
 	switch s := i.(type) {
@@ -80,7 +88,7 @@ func ToStringE(i interface{}) (string, error) {
 	}
 }
 
-func AnyToString(v any) string {
+func ToString(v any) string {
 	nv, err := ToStringE(v)
 	if err != nil {
 		return fmt.Sprintf("%v", v)

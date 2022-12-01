@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/songzhibin97/go-baseutils/base/anytostring"
+	banytostring "github.com/songzhibin97/go-baseutils/base/anytostring"
 	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 	"github.com/songzhibin97/go-baseutils/structure/trees/redblacktree"
@@ -146,7 +146,7 @@ func (m *Map[K, V]) UnmarshalJSON(bytes []byte) error {
 				return err
 			}
 			var nv V
-			err = m.valueComparator.Unmarshal([]byte(anytostring.AnyToString(value)), &nv)
+			err = m.valueComparator.Unmarshal([]byte(banytostring.ToString(value)), &nv)
 			if err != nil {
 				return err
 			}

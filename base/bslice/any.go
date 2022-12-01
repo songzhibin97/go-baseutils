@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"sync"
+
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 )
 
 // =====================================================================================================================
@@ -390,7 +391,10 @@ func (x *UnsafeAnyBSlice[E]) GetByRangeE(start int, end int) ([]E, error) {
 	if start < 0 || end > ln || start > end {
 		return nil, errors.New(fmt.Sprintf("invalid range:%d-%d, ln:%d", start, end, ln))
 	}
-	return x.e[start:end], nil
+	v := x.e[start:end]
+	cp := make([]E, len(v))
+	copy(cp, v)
+	return v, nil
 }
 
 func (x *UnsafeAnyBSlice[E]) SetByIndex(index int, e E) {

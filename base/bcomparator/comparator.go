@@ -104,15 +104,15 @@ func Uint64Comparator() Comparator[uint64] {
 
 // ------------------------------------------------ ---------------------------------------------------------------------
 
-func Float64Comparator() Comparator[float64] {
-	return func(a float64, b float64) int {
-		return bternaryexpr.TernaryExpr[int](bmath.Abs(a-b) < 0.0000001, 0, bternaryexpr.TernaryExpr[int](a > b, 1, -1))
-	}
-}
-
 func Float32Comparator() Comparator[float32] {
 	return func(a float32, b float32) int {
 		return bternaryexpr.TernaryExpr[int](bmath.Abs(float64(a-b)) < 0.0000001, 0, bternaryexpr.TernaryExpr[int](a > b, 1, -1))
+	}
+}
+
+func Float64Comparator() Comparator[float64] {
+	return func(a float64, b float64) int {
+		return bternaryexpr.TernaryExpr[int](bmath.Abs(a-b) < 0.0000001, 0, bternaryexpr.TernaryExpr[int](a > b, 1, -1))
 	}
 }
 

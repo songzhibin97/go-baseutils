@@ -7,6 +7,7 @@ import (
 
 type CalculableBSlice[E btype.Integer | btype.Float] interface {
 	OrderedBSlice[E]
+
 	Sum() E
 	Avg() E
 	Max() E
