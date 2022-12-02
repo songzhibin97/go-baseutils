@@ -1,4 +1,4 @@
-package concurrent
+package bconcurrent
 
 // Pipeline 串联模式
 func Pipeline[T any](in chan T) <-chan T {

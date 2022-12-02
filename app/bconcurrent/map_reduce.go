@@ -1,4 +1,4 @@
-package concurrent
+package bconcurrent
 
 func MapChan[T any](in <-chan T, fn func(T) T) <-chan T {
 	out := make(chan T, 1)

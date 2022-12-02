@@ -17,6 +17,8 @@ const (
 	NoExpire      time.Duration = -1
 )
 
+var _ Cache[int, any] = (*BCache[int, any])(nil)
+
 type BCache[K comparable, V any] struct {
 	*bCache[K, V]
 }
