@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strings"
 
-	banytostring "github.com/songzhibin97/go-baseutils/base/anytostring"
+	banytostring "github.com/songzhibin97/go-baseutils/base/banytostring"
 	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 	"github.com/songzhibin97/go-baseutils/structure/trees/redblacktree"

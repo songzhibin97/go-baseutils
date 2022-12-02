@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	banytostring "github.com/songzhibin97/go-baseutils/base/anytostring"
+	banytostring "github.com/songzhibin97/go-baseutils/base/banytostring"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 )
 
