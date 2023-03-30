@@ -1,0 +1,6 @@
+
+# btoanyslice
+
+## API
+
+- ToAnySlice

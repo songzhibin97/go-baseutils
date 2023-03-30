@@ -33,3 +33,4 @@ go 1.18+泛型的基础工具集合
 - [bslice](base/bslice/README.md)
 - [bternaryexpr](base/bternaryexpr/README.md)
 - [bpoint](base/bpoint/README.md)
+- [btoanyslice](base/btoanyslice/README.md)
