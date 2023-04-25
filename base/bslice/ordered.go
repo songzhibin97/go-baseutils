@@ -7,23 +7,15 @@ import (
 // =====================================================================================================================
 // unsafe
 
-func NewUnsafeOrderedBSlice[E btype.Ordered]() OrderedBSlice[E] {
+func NewUnsafeOrderedBSlice[E btype.Ordered]() *UnsafeOrderedBSlice[E] {
 	return &UnsafeOrderedBSlice[E]{
-		UnsafeComparableBSlice: &UnsafeComparableBSlice[E]{
-			UnsafeAnyBSlice: &UnsafeAnyBSlice[E]{
-				e: nil,
-			},
-		},
+		UnsafeComparableBSlice: NewUnsafeComparableBSlice[E](),
 	}
 }
 
-func NewUnsafeOrderedBSliceBySlice[E btype.Ordered](s []E) OrderedBSlice[E] {
+func NewUnsafeOrderedBSliceBySlice[E btype.Ordered](s []E) *UnsafeOrderedBSlice[E] {
 	return &UnsafeOrderedBSlice[E]{
-		UnsafeComparableBSlice: &UnsafeComparableBSlice[E]{
-			UnsafeAnyBSlice: &UnsafeAnyBSlice[E]{
-				e: s,
-			},
-		},
+		UnsafeComparableBSlice: NewUnsafeComparableBSliceBySlice[E](s),
 	}
 }
 
@@ -50,27 +42,15 @@ func (x *UnsafeOrderedBSlice[E]) BinarySearch(target E) (int, bool) {
 // =====================================================================================================================
 // safe
 
-func NewSafeOrderedBSlice[E btype.Integer | btype.Float]() OrderedBSlice[E] {
+func NewSafeOrderedBSlice[E btype.Integer | btype.Float]() *SafeOrderedBSlice[E] {
 	return &SafeOrderedBSlice[E]{
-		SafeComparableBSlice: &SafeComparableBSlice[E]{
-			SafeAnyBSlice: &SafeAnyBSlice[E]{
-				es: &UnsafeAnyBSlice[E]{
-					e: nil,
-				},
-			},
-		},
+		SafeComparableBSlice: NewSafeComparableBSlice[E](),
 	}
 }
 
-func NewSafeOrderedBSliceBySlice[E btype.Integer | btype.Float](s []E) OrderedBSlice[E] {
+func NewSafeOrderedBSliceBySlice[E btype.Integer | btype.Float](s []E) *SafeOrderedBSlice[E] {
 	return &SafeOrderedBSlice[E]{
-		SafeComparableBSlice: &SafeComparableBSlice[E]{
-			SafeAnyBSlice: &SafeAnyBSlice[E]{
-				es: &UnsafeAnyBSlice[E]{
-					e: s,
-				},
-			},
-		},
+		SafeComparableBSlice: NewSafeComparableBSliceBySlice[E](s),
 	}
 }
 

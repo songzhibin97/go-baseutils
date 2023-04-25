@@ -11,11 +11,11 @@ import (
 // =====================================================================================================================
 // unsafe
 
-func NewUnsafeAnyBMap[K comparable, V any]() AnyBMap[K, V] {
+func NewUnsafeAnyBMap[K comparable, V any]() *UnsafeAnyBMap[K, V] {
 	return &UnsafeAnyBMap[K, V]{mp: map[K]V{}}
 }
 
-func NewUnsafeAnyBMapByMap[K comparable, V any](mp map[K]V) AnyBMap[K, V] {
+func NewUnsafeAnyBMapByMap[K comparable, V any](mp map[K]V) *UnsafeAnyBMap[K, V] {
 	if mp == nil {
 		return NewUnsafeAnyBMap[K, V]()
 	}
@@ -190,19 +190,15 @@ func (x *UnsafeAnyBMap[K, V]) Replace(k K, ov, nv V) bool {
 // =====================================================================================================================
 // safe
 
-func NewSafeAnyBMap[K comparable, V any]() AnyBMap[K, V] {
-	return &SafeAnyBMap[K, V]{mp: &UnsafeAnyBMap[K, V]{
-		mp: map[K]V{},
-	}}
+func NewSafeAnyBMap[K comparable, V any]() *SafeAnyBMap[K, V] {
+	return &SafeAnyBMap[K, V]{mp: NewUnsafeAnyBMap[K,V]()}
 }
 
-func NewSafeAnyBMapByMap[K comparable, V any](mp map[K]V) AnyBMap[K, V] {
+func NewSafeAnyBMapByMap[K comparable, V any](mp map[K]V) *SafeAnyBMap[K, V] {
 	if mp == nil {
 		return NewSafeAnyBMap[K, V]()
 	}
-	return &SafeAnyBMap[K, V]{mp: &UnsafeAnyBMap[K, V]{
-		mp: mp,
-	}}
+	return &SafeAnyBMap[K, V]{mp: NewUnsafeAnyBMapByMap[K,V](mp)}
 }
 
 type SafeAnyBMap[K comparable, V any] struct {

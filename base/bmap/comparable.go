@@ -3,7 +3,7 @@ package bmap
 // =====================================================================================================================
 // unsafe
 
-func NewUnsafeComparableBMap[K comparable, V comparable]() ComparableBMap[K, V] {
+func NewUnsafeComparableBMap[K comparable, V comparable]() *UnsafeComparableBMap[K, V] {
 	return &UnsafeComparableBMap[K, V]{
 		UnsafeAnyBMap: &UnsafeAnyBMap[K, V]{
 			mp: make(map[K]V),
@@ -11,7 +11,7 @@ func NewUnsafeComparableBMap[K comparable, V comparable]() ComparableBMap[K, V] 
 	}
 }
 
-func NewUnsafeComparableBMapByMap[K comparable, V comparable](mp map[K]V) ComparableBMap[K, V] {
+func NewUnsafeComparableBMapByMap[K comparable, V comparable](mp map[K]V)  *UnsafeComparableBMap[K, V] {
 	return &UnsafeComparableBMap[K, V]{
 		UnsafeAnyBMap: &UnsafeAnyBMap[K, V]{
 			mp: mp,
@@ -34,23 +34,15 @@ func (x *UnsafeComparableBMap[K, V]) EqualByBMap(m AnyBMap[K, V]) bool {
 // =====================================================================================================================
 // safe
 
-func NewSafeComparableBMap[K comparable, V comparable]() ComparableBMap[K, V] {
+func NewSafeComparableBMap[K comparable, V comparable]() *SafeComparableBMap[K, V] {
 	return &SafeComparableBMap[K, V]{
-		SafeAnyBMap: &SafeAnyBMap[K, V]{
-			mp: &UnsafeAnyBMap[K, V]{
-				mp: map[K]V{},
-			},
-		},
+		SafeAnyBMap: NewSafeAnyBMap[K,V](),
 	}
 }
 
-func NewSafeComparableBMapByMap[K comparable, V comparable](mp map[K]V) ComparableBMap[K, V] {
+func NewSafeComparableBMapByMap[K comparable, V comparable](mp map[K]V) *SafeComparableBMap[K, V] {
 	return &SafeComparableBMap[K, V]{
-		SafeAnyBMap: &SafeAnyBMap[K, V]{
-			mp: &UnsafeAnyBMap[K, V]{
-				mp: mp,
-			},
-		},
+		SafeAnyBMap: NewSafeAnyBMapByMap[K,V](mp),
 	}
 }
 

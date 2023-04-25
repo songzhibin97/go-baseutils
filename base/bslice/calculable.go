@@ -9,27 +9,15 @@ import (
 // =====================================================================================================================
 // unsafe
 
-func NewUnsafeCalculableBSlice[E btype.Integer | btype.Float]() CalculableBSlice[E] {
+func NewUnsafeCalculableBSlice[E btype.Integer | btype.Float]() *UnsafeCalculableBSlice[E] {
 	return &UnsafeCalculableBSlice[E]{
-		UnsafeOrderedBSlice: &UnsafeOrderedBSlice[E]{
-			UnsafeComparableBSlice: &UnsafeComparableBSlice[E]{
-				UnsafeAnyBSlice: &UnsafeAnyBSlice[E]{
-					e: nil,
-				},
-			},
-		},
+		UnsafeOrderedBSlice: NewUnsafeOrderedBSlice[E](),
 	}
 }
 
-func NewUnsafeCalculableBSliceBySlice[E btype.Integer | btype.Float](s []E) CalculableBSlice[E] {
+func NewUnsafeCalculableBSliceBySlice[E btype.Integer | btype.Float](s []E) *UnsafeCalculableBSlice[E] {
 	return &UnsafeCalculableBSlice[E]{
-		UnsafeOrderedBSlice: &UnsafeOrderedBSlice[E]{
-			UnsafeComparableBSlice: &UnsafeComparableBSlice[E]{
-				UnsafeAnyBSlice: &UnsafeAnyBSlice[E]{
-					e: s,
-				},
-			},
-		},
+		UnsafeOrderedBSlice: NewUnsafeOrderedBSliceBySlice[E](s),
 	}
 }
 
@@ -84,31 +72,15 @@ func (x *UnsafeCalculableBSlice[E]) Min() E {
 // =====================================================================================================================
 // safe
 
-func NewSafeCalculableBSlice[E btype.Integer | btype.Float]() CalculableBSlice[E] {
+func NewSafeCalculableBSlice[E btype.Integer | btype.Float]() *SafeCalculableBSlice[E] {
 	return &SafeCalculableBSlice[E]{
-		SafeOrderedBSlice: &SafeOrderedBSlice[E]{
-			SafeComparableBSlice: &SafeComparableBSlice[E]{
-				SafeAnyBSlice: &SafeAnyBSlice[E]{
-					es: &UnsafeAnyBSlice[E]{
-						e: []E{},
-					},
-				},
-			},
-		},
+		SafeOrderedBSlice: NewSafeOrderedBSlice[E](),
 	}
 }
 
-func NewSafeCalculableBSliceBySlice[E btype.Integer | btype.Float](s []E) CalculableBSlice[E] {
+func NewSafeCalculableBSliceBySlice[E btype.Integer | btype.Float](s []E) *SafeCalculableBSlice[E] {
 	return &SafeCalculableBSlice[E]{
-		SafeOrderedBSlice: &SafeOrderedBSlice[E]{
-			SafeComparableBSlice: &SafeComparableBSlice[E]{
-				SafeAnyBSlice: &SafeAnyBSlice[E]{
-					es: &UnsafeAnyBSlice[E]{
-						e: s,
-					},
-				},
-			},
-		},
+		SafeOrderedBSlice: NewSafeOrderedBSliceBySlice[E](s),
 	}
 }
 

@@ -3,15 +3,15 @@ package bslice
 // =====================================================================================================================
 // unsafe
 
-func NewUnsafeComparableBSlice[E comparable]() ComparableBSlice[E] {
+func NewUnsafeComparableBSlice[E comparable]() *UnsafeComparableBSlice[E] {
 	return &UnsafeComparableBSlice[E]{
-		UnsafeAnyBSlice: &UnsafeAnyBSlice[E]{},
+		UnsafeAnyBSlice: NewUnsafeAnyBSlice[E](),
 	}
 }
 
-func NewUnsafeComparableBSliceBySlice[E comparable](s []E) ComparableBSlice[E] {
+func NewUnsafeComparableBSliceBySlice[E comparable](s []E) *UnsafeComparableBSlice[E] {
 	return &UnsafeComparableBSlice[E]{
-		UnsafeAnyBSlice: &UnsafeAnyBSlice[E]{e: s},
+		UnsafeAnyBSlice: NewUnsafeAnyBSliceBySlice[E](s),
 	}
 }
 
@@ -34,15 +34,15 @@ func (x *UnsafeComparableBSlice[E]) Compact() {
 // =====================================================================================================================
 // safe
 
-func NewSafeComparableBSlice[E comparable]() ComparableBSlice[E] {
+func NewSafeComparableBSlice[E comparable]() *SafeComparableBSlice[E] {
 	return &SafeComparableBSlice[E]{
-		SafeAnyBSlice: &SafeAnyBSlice[E]{},
+		SafeAnyBSlice: NewSafeAnyBSlice[E](),
 	}
 }
 
-func NewSafeComparableBSliceBySlice[E comparable](s []E) ComparableBSlice[E] {
+func NewSafeComparableBSliceBySlice[E comparable](s []E) *SafeComparableBSlice[E] {
 	return &SafeComparableBSlice[E]{
-		SafeAnyBSlice: &SafeAnyBSlice[E]{es: &UnsafeAnyBSlice[E]{e: s}},
+		SafeAnyBSlice: NewSafeAnyBSliceBySlice[E](s),
 	}
 }
 

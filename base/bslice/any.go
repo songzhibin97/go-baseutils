@@ -12,13 +12,13 @@ import (
 // =====================================================================================================================
 // unsafe
 
-func NewUnsafeAnyBSlice[E any]() AnyBSlice[E] {
+func NewUnsafeAnyBSlice[E any]() *UnsafeAnyBSlice[E] {
 	return &UnsafeAnyBSlice[E]{
 		e: []E{},
 	}
 }
 
-func NewUnsafeAnyBSliceBySlice[E any](s []E) AnyBSlice[E] {
+func NewUnsafeAnyBSliceBySlice[E any](s []E) *UnsafeAnyBSlice[E] {
 	return &UnsafeAnyBSlice[E]{
 		e: s,
 	}
@@ -430,17 +430,15 @@ func (x *UnsafeAnyBSlice[E]) SetByRangeE(index int, es []E) error {
 // =====================================================================================================================
 // safe
 
-func NewSafeAnyBSlice[E any]() AnyBSlice[E] {
-	return &UnsafeAnyBSlice[E]{
-		e: []E{},
+func NewSafeAnyBSlice[E any]() *SafeAnyBSlice[E] {
+	return &SafeAnyBSlice[E]{
+		es:  NewUnsafeAnyBSlice[E](),
 	}
 }
 
-func NewSafeAnyBSliceBySlice[E any](e []E) AnyBSlice[E] {
+func NewSafeAnyBSliceBySlice[E any](e []E) *SafeAnyBSlice[E] {
 	return &SafeAnyBSlice[E]{
-		es: &UnsafeAnyBSlice[E]{
-			e: e,
-		},
+		es: NewUnsafeAnyBSliceBySlice(e),
 	}
 }
 
