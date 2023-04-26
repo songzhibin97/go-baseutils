@@ -17,6 +17,12 @@ import (
 // Assert List implementation
 var _ lists.List[any] = (*List[any])(nil)
 
+func NewSafe[E any](values ...E) *ListSafe[E] {
+	return &ListSafe[E]{
+		unsafe: New(values...),
+	}
+}
+
 // List holds the elements, where each element points to the next element
 type List[E any] struct {
 	first *element[E]
