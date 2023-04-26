@@ -1,11 +1,30 @@
 package treeset
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/sets"
 	"sync"
 )
 
 var _ sets.Set[any] = (*SetSafe[any])(nil)
+
+func NewSafeWith[E any](comparator bcomparator.Comparator[E], values ...E) *SetSafe[E] {
+	return &SetSafe[E]{
+		unsafe: NewWith[E](comparator, values...),
+	}
+}
+
+func NewSafeWithIntComparator(values ...int) *SetSafe[int] {
+	return &SetSafe[int]{
+		unsafe: NewWithIntComparator(values...),
+	}
+}
+
+func NewSafeWithStringComparator(values ...string) *SetSafe[string] {
+	return &SetSafe[string]{
+		unsafe: NewWithStringComparator(values...),
+	}
+}
 
 type SetSafe[E any] struct {
 	unsafe *Set[E]

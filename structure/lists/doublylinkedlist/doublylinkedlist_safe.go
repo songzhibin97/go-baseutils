@@ -8,6 +8,13 @@ import (
 
 var _ lists.List[any] = (*ListSafe[any])(nil)
 
+func NewSafe[E any](values ...E) *ListSafe[E] {
+	return &ListSafe[E]{
+		unsafe: New(values...),
+	}
+}
+
+
 type ListSafe[E any] struct {
 	unsafe *List[E]
 	lock   sync.Mutex

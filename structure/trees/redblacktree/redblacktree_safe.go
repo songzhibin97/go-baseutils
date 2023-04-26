@@ -1,11 +1,30 @@
 package redblacktree
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/trees"
 	"sync"
 )
 
 var _ trees.Tree[any] = (*TreeSafe[any, any])(nil)
+
+func NewSafeWith[K, V any](comparator bcomparator.Comparator[K]) *TreeSafe[K, V] {
+	return &TreeSafe[K, V]{
+		unsafe: NewWith[K, V](comparator),
+	}
+}
+
+func NewSafeWithIntComparator[V any]() *TreeSafe[int, V] {
+	return &TreeSafe[int, V]{
+		unsafe: NewWithIntComparator[V](),
+	}
+}
+
+func NewSafeWithStringComparator[V any]() *TreeSafe[string, V] {
+	return &TreeSafe[string, V]{
+		unsafe: NewWithStringComparator[V](),
+	}
+}
 
 type TreeSafe[K, V any] struct {
 	unsafe *Tree[K, V]

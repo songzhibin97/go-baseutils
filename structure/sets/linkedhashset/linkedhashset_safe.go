@@ -7,6 +7,12 @@ import (
 
 var _ sets.Set[int] = (*SetSafe[int])(nil)
 
+func NewSafe[E comparable](values ...E) *SetSafe[E] {
+	return &SetSafe[E]{
+		unsafe: New[E](values...),
+	}
+}
+
 type SetSafe[E comparable] struct {
 	unsafe *Set[E]
 	lock   sync.Mutex

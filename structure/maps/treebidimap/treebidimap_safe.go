@@ -1,11 +1,29 @@
 package treebidimap
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 	"sync"
 )
 
 var _ maps.BidiMap[int, int] = (*MapSafe[int, int])(nil)
+
+
+// NewWith instantiates a bidirectional map.
+func NewSafeWith[K, V any](keyComparator bcomparator.Comparator[K], valueComparator bcomparator.Comparator[V]) *MapSafe[K, V] {
+	return &MapSafe[K, V]{
+		unsafe: NewWith[K, V](keyComparator, valueComparator),
+	}
+}
+
+func NewSafeWithIntComparators() *MapSafe[int, int] {
+	return NewSafeWith(bcomparator.IntComparator(), bcomparator.IntComparator())
+}
+
+func NewSafeWithStringComparators() *MapSafe[string, string] {
+	return NewSafeWith(bcomparator.StringComparator(), bcomparator.StringComparator())
+}
+
 
 type MapSafe[K any, V any] struct {
 	unsafe *Map[K, V]

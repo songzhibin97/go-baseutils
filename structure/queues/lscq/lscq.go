@@ -15,6 +15,12 @@ type Queue[E any] struct {
 	zero E
 }
 
+func New[E any]() *Queue[E] {
+	return &Queue[E]{
+		q: NewPointer(),
+	}
+}
+
 func (q *Queue[E]) Enqueue(value E) {
 	_ = fmt.Sprintf("%p", &value) // TODO make generic variables escape
 	q.q.Enqueue(unsafe.Pointer(&value))
@@ -56,10 +62,4 @@ func (q *Queue[E]) Values() []E {
 func (q *Queue[E]) String() string {
 	//TODO implement me
 	panic("implement me")
-}
-
-func New[E any]() *Queue[E] {
-	return &Queue[E]{
-		q: NewPointer(),
-	}
 }

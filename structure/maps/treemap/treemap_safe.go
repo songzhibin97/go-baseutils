@@ -1,11 +1,30 @@
 package treemap
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 	"sync"
 )
 
 var _ maps.Map[int, any] = (*MapSafe[int, any])(nil)
+
+func NewSafeWith[K, V any](comparator bcomparator.Comparator[K]) *MapSafe[K, V] {
+	return &MapSafe[K, V]{
+		unsafe: NewWith[K, V](comparator),
+	}
+}
+
+func NewSafeWithIntComparator[V any]() *MapSafe[int, V] {
+	return &MapSafe[int, V]{
+		unsafe: NewWithIntComparator[V](),
+	}
+}
+
+func NewSafeWithStringComparator[V any]() *MapSafe[string, V] {
+	return &MapSafe[string, V]{
+		unsafe: NewWithStringComparator[V](),
+	}
+}
 
 type MapSafe[K any, V any] struct {
 	unsafe *Map[K, V]

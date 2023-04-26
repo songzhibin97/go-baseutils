@@ -7,6 +7,13 @@ import (
 
 var _ stacks.Stack[any] = (*StackSafe[any])(nil)
 
+func NewSafe[E any]() *StackSafe[E] {
+	return &StackSafe[E]{
+		unsafe: New[E](),
+	}
+}
+
+
 type StackSafe[E any] struct {
 	unsafe *Stack[E]
 	lock   sync.Mutex

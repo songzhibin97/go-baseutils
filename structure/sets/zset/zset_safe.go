@@ -1,11 +1,18 @@
 package zset
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/sets"
 	"sync"
 )
 
 var _ sets.Set[int] = (*SetSafe[int])(nil)
+
+func NewSafe[K comparable](comparator bcomparator.Comparator[K]) *SetSafe[K] {
+	return &SetSafe[K]{
+		unsafe: New[K](comparator),
+	}
+}
 
 type SetSafe[K comparable] struct {
 	unsafe *Set[K]

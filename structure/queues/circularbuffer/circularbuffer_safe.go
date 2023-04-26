@@ -7,6 +7,12 @@ import (
 
 var _ queues.Queue[any] = (*QueueSafe[any])(nil)
 
+func NewSafe[E any](maxSize int) *QueueSafe[E] {
+	return &QueueSafe[E]{
+		unsafe: New[E](maxSize),
+	}
+}
+
 type QueueSafe[E any] struct {
 	unsafe *Queue[E]
 	lock   sync.Mutex

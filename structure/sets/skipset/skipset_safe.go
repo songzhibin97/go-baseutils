@@ -1,11 +1,18 @@
 package skipset
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/sets"
 	"sync"
 )
 
 var _ sets.Set[any] = (*SetSafe[any])(nil)
+
+func NewSafe[E any](comparator bcomparator.Comparator[E]) *SetSafe[E] {
+	return &SetSafe[E]{
+		unsafe: New[E](comparator),
+	}
+}
 
 type SetSafe[E any] struct {
 	unsafe *Set[E]

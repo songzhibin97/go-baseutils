@@ -7,6 +7,11 @@ import (
 
 var _ maps.BidiMap[int, int] = (*MapSafe[int, int])(nil)
 
+func NewSafe[K comparable, V comparable]() *MapSafe[K, V] {
+	return &MapSafe[K, V]{
+		unsafe: New[K, V](),
+	}
+}
 
 type MapSafe[K comparable, V comparable] struct {
 	unsafe *Map[K, V]

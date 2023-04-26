@@ -7,6 +7,9 @@ import (
 
 var _ maps.Map[int, any] = (*MapSafe[int, any])(nil)
 
+func NewSafe[K comparable, V any]() *MapSafe[K, V] {
+	return &MapSafe[K, V]{unsafe: New[K, V]()}
+}
 
 type MapSafe[K comparable, V any] struct {
 	unsafe *Map[K, V]

@@ -1,11 +1,18 @@
 package skipmap
 
 import (
+	"github.com/songzhibin97/go-baseutils/base/bcomparator"
 	"github.com/songzhibin97/go-baseutils/structure/maps"
 	"sync"
 )
 
 var _ maps.Map[int, any] = (*MapSafe[int, any])(nil)
+
+func NewSafe[K, V any](comparator bcomparator.Comparator[K]) *MapSafe[K, V] {
+	return &MapSafe[K, V]{
+		unsafe: New[K, V](comparator),
+	}
+}
 
 type MapSafe[K any, V any] struct {
 	unsafe *Map[K, V]
