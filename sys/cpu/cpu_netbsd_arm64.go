@@ -4,6 +4,11 @@
 
 package cpu
 
+import (
+	"syscall"
+	"unsafe"
+)
+
 // Minimal copy of functionality from x/sys/unix so the cpu package can call
 // sysctl without depending on x/sys/unix.
 

@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/songzhibin97/go-baseutils/sys/cpu"
+	"golang.org/x/sys/cpu"
 )
 
 func TestAMD64minimalFeatures(t *testing.T) {
@@ -42,7 +42,7 @@ func TestAVX512HasAVX2AndAVX(t *testing.T) {
 }
 
 func TestARM64minimalFeatures(t *testing.T) {
-	if runtime.GOARCH != "arm64" || (runtime.GOOS == "darwin" || runtime.GOOS == "ios") {
+	if runtime.GOARCH != "arm64" || runtime.GOOS == "ios" {
 		return
 	}
 	if !cpu.ARM64.HasASIMD {

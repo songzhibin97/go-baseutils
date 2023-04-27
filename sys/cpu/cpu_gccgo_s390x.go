@@ -14,16 +14,10 @@ func haveAsmFunctions() bool { return false }
 // TODO(mundaym): the following feature detection functions are currently
 // stubs. See https://golang.org/cl/162887 for how to fix this.
 // They are likely to be expensive to call so the results should be cached.
-func stfle() facilityList { panic("not implemented for gccgo") }
-
-func kmQuery() queryResult { panic("not implemented for gccgo") }
-
-func kmcQuery() queryResult { panic("not implemented for gccgo") }
-
+func stfle() facilityList     { panic("not implemented for gccgo") }
+func kmQuery() queryResult    { panic("not implemented for gccgo") }
+func kmcQuery() queryResult   { panic("not implemented for gccgo") }
 func kmctrQuery() queryResult { panic("not implemented for gccgo") }
-
-func kmaQuery() queryResult { panic("not implemented for gccgo") }
-
-func kimdQuery() queryResult { panic("not implemented for gccgo") }
-
-func klmdQuery() queryResult { panic("not implemented for gccgo") }
+func kmaQuery() queryResult   { panic("not implemented for gccgo") }
+func kimdQuery() queryResult  { panic("not implemented for gccgo") }
+func klmdQuery() queryResult  { panic("not implemented for gccgo") }
