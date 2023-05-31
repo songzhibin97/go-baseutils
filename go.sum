@@ -11,6 +11,8 @@ github.com/songzhibin97/gkit v1.2.12-0.20230515045744-8d9940edba22 h1:J+xeNMwRlx
 github.com/songzhibin97/gkit v1.2.12-0.20230515045744-8d9940edba22/go.mod h1:axjYsiJWnn/kf/uGiUr9JPHRlt2CQrqfq/fPZ3xIY+M=
 github.com/songzhibin97/gkit v1.2.12-0.20230531074925-7810a2412d88 h1:Luhyo6FBBjEBiGK4tFbxnuRyOZLWExOk9UUHOs1FmTA=
 github.com/songzhibin97/gkit v1.2.12-0.20230531074925-7810a2412d88/go.mod h1:axjYsiJWnn/kf/uGiUr9JPHRlt2CQrqfq/fPZ3xIY+M=
+github.com/songzhibin97/gkit v1.2.12-0.20230531075453-a900013b7eab h1:A8asGQXIr+h4WjkFyIC156h7F9gyS97w2GxOsVq5y70=
+github.com/songzhibin97/gkit v1.2.12-0.20230531075453-a900013b7eab/go.mod h1:axjYsiJWnn/kf/uGiUr9JPHRlt2CQrqfq/fPZ3xIY+M=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
