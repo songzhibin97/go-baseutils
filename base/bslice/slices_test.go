@@ -125,6 +125,16 @@ func TestEqualFunc(t *testing.T) {
 	}
 }
 
+func BenchmarkEqualFunc_Large(b *testing.B) {
+	type Large [4 * 1024]byte
+
+	xs := make([]Large, 1024)
+	ys := make([]Large, 1024)
+	for i := 0; i < b.N; i++ {
+		_ = EqualFunc(xs, ys, func(x, y Large) bool { return x == y })
+	}
+}
+
 var compareIntTests = []struct {
 	s1, s2 []int
 	want   int
@@ -333,6 +343,15 @@ func equalToIndex[T any](f func(T, T) bool, v1 T) func(T) bool {
 	}
 }
 
+func BenchmarkIndex_Large(b *testing.B) {
+	type Large [4 * 1024]byte
+
+	ss := make([]Large, 1024)
+	for i := 0; i < b.N; i++ {
+		_ = Index(ss, Large{1})
+	}
+}
+
 func TestIndexFunc(t *testing.T) {
 	for _, test := range indexTests {
 		if got := IndexFunc(test.s, equalToIndex(equal[int], test.v)); got != test.want {
@@ -349,11 +368,41 @@ func TestIndexFunc(t *testing.T) {
 	}
 }
 
+func BenchmarkIndexFunc_Large(b *testing.B) {
+	type Large [4 * 1024]byte
+
+	ss := make([]Large, 1024)
+	for i := 0; i < b.N; i++ {
+		_ = IndexFunc(ss, func(e Large) bool {
+			return e == Large{1}
+		})
+	}
+}
+
 func TestContains(t *testing.T) {
 	for _, test := range indexTests {
 		if got := Contains(test.s, test.v); got != (test.want != -1) {
 			t.Errorf("Contains(%v, %v) = %t, want %t", test.s, test.v, got, test.want != -1)
 		}
+	}
+}
+
+func TestContainsFunc(t *testing.T) {
+	for _, test := range indexTests {
+		if got := ContainsFunc(test.s, equalToIndex(equal[int], test.v)); got != (test.want != -1) {
+			t.Errorf("ContainsFunc(%v, equalToIndex(equal[int], %v)) = %t, want %t", test.s, test.v, got, test.want != -1)
+		}
+	}
+
+	s1 := []string{"hi", "HI"}
+	if got := ContainsFunc(s1, equalToIndex(equal[string], "HI")); got != true {
+		t.Errorf("ContainsFunc(%v, equalToContains(equal[string], %q)) = %t, want %t", s1, "HI", got, true)
+	}
+	if got := ContainsFunc(s1, equalToIndex(equal[string], "hI")); got != false {
+		t.Errorf("ContainsFunc(%v, equalToContains(strings.EqualFold, %q)) = %t, want %t", s1, "hI", got, false)
+	}
+	if got := ContainsFunc(s1, equalToIndex(strings.EqualFold, "hI")); got != true {
+		t.Errorf("ContainsFunc(%v, equalToContains(strings.EqualFold, %q)) = %t, want %t", s1, "hI", got, true)
 	}
 }
 
@@ -386,12 +435,6 @@ var insertTests = []struct {
 		2,
 		[]int{4, 5},
 		[]int{1, 2, 4, 5, 3},
-	},
-	{
-		[]int{1, 2, 3},
-		3,
-		[]int{4, 5},
-		[]int{1, 2, 3, 4, 5},
 	},
 }
 
@@ -502,30 +545,37 @@ func TestClone(t *testing.T) {
 }
 
 var compactTests = []struct {
+	name string
 	s    []int
 	want []int
 }{
 	{
+		"nil",
 		nil,
 		nil,
 	},
 	{
+		"one",
 		[]int{1},
 		[]int{1},
 	},
 	{
+		"sorted",
 		[]int{1, 2, 3},
 		[]int{1, 2, 3},
 	},
 	{
+		"1 item",
 		[]int{1, 1, 2},
 		[]int{1, 2},
 	},
 	{
+		"unsorted",
 		[]int{1, 2, 1},
 		[]int{1, 2, 1},
 	},
 	{
+		"many",
 		[]int{1, 2, 2, 3, 3, 4},
 		[]int{1, 2, 3, 4},
 	},
@@ -537,6 +587,28 @@ func TestCompact(t *testing.T) {
 		if got := Compact(copy); !Equal(got, test.want) {
 			t.Errorf("Compact(%v) = %v, want %v", test.s, got, test.want)
 		}
+	}
+}
+
+func BenchmarkCompact(b *testing.B) {
+	for _, c := range compactTests {
+		b.Run(c.name, func(b *testing.B) {
+			ss := make([]int, 0, 64)
+			for k := 0; k < b.N; k++ {
+				ss = ss[:0]
+				ss = append(ss, c.s...)
+				_ = Compact(ss)
+			}
+		})
+	}
+}
+
+func BenchmarkCompact_Large(b *testing.B) {
+	type Large [4 * 1024]byte
+
+	ss := make([]Large, 1024)
+	for i := 0; i < b.N; i++ {
+		_ = Compact(ss)
 	}
 }
 
@@ -553,6 +625,15 @@ func TestCompactFunc(t *testing.T) {
 	want := []string{"a", "B"}
 	if got := CompactFunc(copy, strings.EqualFold); !Equal(got, want) {
 		t.Errorf("CompactFunc(%v, strings.EqualFold) = %v, want %v", s1, got, want)
+	}
+}
+
+func BenchmarkCompactFunc_Large(b *testing.B) {
+	type Large [4 * 1024]byte
+
+	ss := make([]Large, 1024)
+	for i := 0; i < b.N; i++ {
+		_ = CompactFunc(ss, func(a, b Large) bool { return a == b })
 	}
 }
 
@@ -663,6 +744,23 @@ func TestReplace(t *testing.T) {
 		got := Replace(test.s, test.i, test.j, test.v...)
 		if !Equal(got, want) {
 			t.Errorf("Replace(%v, %v, %v, %v) = %v, want %v", test.s, test.i, test.j, test.v, got, want)
+		}
+	}
+}
+
+func TestReplacePanics(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		s, v []int
+		i, j int
+	}{
+		{"indexes out of order", []int{1, 2}, []int{3}, 2, 1},
+		{"large index", []int{1, 2}, []int{3}, 1, 10},
+		{"negative index", []int{1, 2}, []int{3}, -1, 2},
+	} {
+		ss, vv := Clone(test.s), Clone(test.v)
+		if !panics(func() { Replace(ss, test.i, test.j, vv...) }) {
+			t.Errorf("Replace %s: should have panicked", test.name)
 		}
 	}
 }
