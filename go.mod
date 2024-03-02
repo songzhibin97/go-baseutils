@@ -7,6 +7,6 @@ require github.com/stretchr/testify v1.8.1
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/songzhibin97/gkit v1.2.12-0.20230531075453-a900013b7eab // indirect
+	github.com/songzhibin97/gkit v1.2.12-0.20240302023041-f2833dba3955 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
